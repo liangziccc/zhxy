@@ -12,6 +12,7 @@
     <module>zhxy-mapper</module>
     <module>zhxy-service</module>
     <module>zhxy-web</module>
+    <module>demo</module>
   </modules>
 
   <name>zhxy</name>
