@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etoak.zhxy.user.mapper.RolesMapper">
+
+   <resultMap id="rMap_roles" type="com.etoak.zhxy.user.entity.Roles">
+       <id property="id" column="roleid"></id>
+       <result property="name" column="name"></result>
+       <collection property="menus" ofType="com.etoak.zhxy.user.entity.Menus">
+           <id property="id" column="menuid"></id>
+           <result property="text" column="text"></result>
+           <result property="href" column="href"></result>
+           <result property="pid" column="pid"></result>
+           <result property="sort" column="sort"></result>
+            <result property="hide" column="hide"></result>
+       </collection>
+   </resultMap>
+    <select id="queryRolesWithMenus" resultMap="rMap_roles">
+        select
+        r.id as roleid ,name,
+        m.id as menuid ,text,href,pid,sort,hide
+        from
+        roles r left join role_menu rm on r.id = rm.roleid
+                left join  menus m on m.id = rm.menuid
+    </select>
+
+</mapper>

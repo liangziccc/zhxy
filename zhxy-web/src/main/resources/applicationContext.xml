@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc
+       https://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!-- IOC容器扫描注解
+    构造对象 Component Controller Service  @Respository @Configuration @Bean
+    属性赋值 @Value @Resource @Autowired @Qualifier beans
+    -->
+    <context:component-scan base-package="com.etoak.zhxy"></context:component-scan>
+    <context:property-placeholder location="classpath:db.properties"></context:property-placeholder>
+    <!--开启mvc扫描注解  @RequestMapping @ResponseBody-->
+    <mvc:annotation-driven></mvc:annotation-driven>
+    <!--静态资源处理器-->
+    <mvc:default-servlet-handler></mvc:default-servlet-handler>
+    <!--自动扫描指定包及其子包接口 自动使用动态代理构造对象注入到IOC容器中-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.etoak.zhxy"></property>
+    </bean>
+    <!--在IOC容器中注册SqlSessionFactory类型的对象,接口, 构造对象-->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="ds"></property>
+        <property name="typeAliasesPackage" value="com.etoak.zhxy"></property>
+        <property name="configLocation" value="classpath:config.xml"></property>
+        <property name="mapperLocations" value="classpath:xml/*Mapper.xml"></property>
+    </bean>
+    <bean id="ds" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${m.driver}"></property>
+        <property name="url" value="${m.url}"></property>
+        <property name="username" value="${m.user}"></property>
+        <property name="password" value="${m.pwd}"></property>
+        <property name="maxActive" value="${m.maxActive}"></property>
+        <property name="maxWait" value="${m.maxWait}"></property>
+    </bean>
+    <bean
+            id="multipartResolver"
+            class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></bean>
+    <bean id="tx"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="ds"></property>
+    </bean>
+    <tx:annotation-driven transaction-manager="tx"></tx:annotation-driven>
+</beans>
+
+
+
+
+

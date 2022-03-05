@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etoak.zhxy.user.mapper.MenusMapper">
+    <select id="queryMenus" resultType="com.etoak.zhxy.user.entity.Menus">
+        select  * from menus
+    </select>
+       
+    <select id="queryMenusById" resultType="com.etoak.zhxy.user.entity.Menus">
+        select * from  menus where  id in (
+         select menuid from role_menu where roleid in (
+            select roleid from user_role where userid=#{userid}
+            )
+        )
+    </select>
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etoak.zhxy.user.mapper.UsersMapper">
+    <resultMap id="rMap_users" type="com.etoak.zhxy.user.entity.Users">
+        <id property="id" column="userid"></id>
+        <result property="uname" column="uname"></result>
+        <result property="pwd" column="pwd"></result>
+        <result property="phone" column="phone"></result>
+        <collection property="roles" ofType="com.etoak.zhxy.user.entity.Roles">
+            <id property="id" column="roleid"></id>
+            <result property="name" column="name"></result>
+        </collection>
+    </resultMap>
+    <select id="queryUsersWithRoles" resultMap="rMap_users">
+        select
+            u.id as userid, uname , pwd , phone,
+            r.id as roleid, name
+                from
+        users u left join user_role ur on u.id=ur.userid
+            left join roles r on r.id = ur.roleid
+    </select>
+
+    <select id="query1" resultType="map">
+        select
+            u.id ,u.uname as username,
+               group_concat(distinct (r.name)) as rolename,
+               group_concat(m.text) as menuname
+        from users u
+                 left join user_role ur on u.id = ur.userid
+                 left join role_menu rm on ur.roleid = rm.roleid
+                 left join roles r  on r.id=ur.roleid
+                 left join  menus m on m.id = rm.menuid group by  u.id;
+    </select>
+
+    <select id="queryUserByNameAndPwd" resultType="com.etoak.zhxy.user.entity.Users">
+        select * from users where uname = #{uname} and pwd = md5(#{pwd})
+    </select>
+</mapper>

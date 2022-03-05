@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etoak.zhxy.jcxx.mapper.DeptMapper">
+    <select id="queryCollegeBySch" resultType="com.etoak.zhxy.jcxx.entity.Dept">
+        select  * from dept where schid = #{schid}
+    </select>
+
+    <select id="queryByPid" resultType="com.etoak.zhxy.jcxx.entity.Dept">
+        select  * from dept where pid = #{pid}
+    </select>
+
+    <select id="queryClasses" resultType="com.etoak.zhxy.jcxx.entity.Classes">
+        select * from classes where deptno = #{deptno}
+    </select>
+</mapper>
